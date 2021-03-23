@@ -1,0 +1,57 @@
+/// PEGA O IP
+function ExeTracking(ip,country){
+    if(ip && country == 'Brazil'){
+        /// EXECUTA API
+        var src = (typeof(getUrlEspecificParameter('src')) != "undefined") ? getUrlEspecificParameter('src') : getCookie('src');
+        $.getJSON('https://api.fornlog.com/v1.0/Traffic?action=verify-access&ip='+ip+'&id_product='+getCookie('id_product')+'&id_account='+getCookie('id_account')+'&id_store='+getCookie('id_store')+'&id_lead='+getCookie('id_lead')+'&domain='+document.location.host+'&title='+encodeURIComponent(document.title)+'&url_page='+document.location.href+'&request_uri='+document.location.pathname+'&referrer='+document.referrer+'&src='+encodeURIComponent(src)+'', function(data) {
+            console.log(data);
+        });
+    }else{
+        console.log('Order Country');
+    }
+}
+
+
+
+function getUrlEspecificParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            var Callback_action = sParameterName[1] === undefined ? true : sParameterName[1];
+            return Callback_action;
+        }
+    }
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    //var expires = "expires="+ d.toUTCString();
+    var expires = d.toUTCString();
+    //document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/" + ";domain="++"";
+
+    document.cookie = ""+cname+"="+cvalue+"; expires=" + expires + "; path=/; domain=."+document.location.host+"";
+}
+
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
